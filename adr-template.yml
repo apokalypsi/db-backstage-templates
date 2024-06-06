@@ -1,0 +1,124 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: adr-template
+  title: ADR Template
+  description: Template para Arquitetura de Decisão Registrada
+spec:
+  owner: your-team
+  type: documentation
+
+  parameters:
+    - title: Informações da Decisão
+      required:
+        - title
+        - date
+        - status
+      properties:
+        title:
+          type: string
+          title: Título da Decisão
+          description: Título breve e descritivo da decisão
+        date:
+          type: string
+          format: date
+          title: Data
+          description: Data da decisão
+        status:
+          type: string
+          title: Status
+          enum:
+            - Proposta
+            - Aceita
+            - Depreciada
+            - Substituída
+            - Rejeitada
+          description: Status da decisão
+
+    - title: Detalhes
+      required:
+        - context
+        - decision
+      properties:
+        context:
+          type: string
+          title: Contexto
+          description: Contexto da decisão
+          ui:widget: textarea
+        decision:
+          type: string
+          title: Decisão
+          description: Descrição da decisão tomada
+          ui:widget: textarea
+        alternatives:
+          type: string
+          title: Alternativas Consideradas
+          description: Alternativas consideradas antes da decisão
+          ui:widget: textarea
+        recommendation:
+          type: string
+          title: Recomendação
+          description: Recomendação baseada na decisão tomada
+          ui:widget: textarea
+        consequences:
+          type: string
+          title: Consequências
+          description: Consequências da decisão
+          ui:widget: textarea
+        next_steps:
+          type: string
+          title: Próximos Passos
+          description: Próximos passos após a decisão
+          ui:widget: textarea
+
+    - title: Aprovadores e Comunicação
+      required:
+        - approvers
+      properties:
+        approvers:
+          type: array
+          title: Aprovadores
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                title: Nome
+              role:
+                type: string
+                title: Posição
+              email:
+                type: string
+                title: Email
+        communication:
+          type: array
+          title: Comunicação
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                title: Nome
+              role:
+                type: string
+                title: Posição
+              email:
+                type: string
+                title: Email
+
+  steps:
+    - id: create-adr
+      name: Create ADR Document
+      action: create:adr
+      input:
+        title: ${{ parameters.title }}
+        date: ${{ parameters.date }}
+        status: ${{ parameters.status }}
+        context: ${{ parameters.context }}
+        decision: ${{ parameters.decision }}
+        alternatives: ${{ parameters.alternatives }}
+        recommendation: ${{ parameters.recommendation }}
+        consequences: ${{ parameters.consequences }}
+        next_steps: ${{ parameters.next_steps }}
+        approvers: ${{ parameters.approvers }}
+        communication: ${{ parameters.communication }}
